@@ -12,14 +12,17 @@ And with grafana 2.5.0 and grafana-zabbix 2.5.1 plugin installed and configured.
 
   Username            :grafana   (zabbix admins, for grafana datasource)
   Password            :grafana-ro
+
 ------------------------------------------------------------------------
   grafana web console :http://192.168.33.10:3000
   Username            :admin
   password            :admin
+
 ------------------------------------------------------------------------
   MySQL password:
   username            :root
   password            :topsecret
+  
 ========================================================================
 
 1.另外我更改使用了aliyun的更新源，在国内会更新快一点。
@@ -35,7 +38,6 @@ And with grafana 2.5.0 and grafana-zabbix 2.5.1 plugin installed and configured.
 关于grafana可以参考
 1.  grafana screencast: https://www.youtube.com/playlist?list=PLDGkOdUX1Ujo3wHw9-z5Vo12YLqXRjzg2
 2.  http://docs.grafana.org/guides/basic_concepts/
-3.  
 
 
 Install is based on the steps found here: http://bicofino.io/blog/2015/10/09/install-zabbix-2-dot-4-6-from-source-on-centos/
