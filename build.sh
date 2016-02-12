@@ -47,6 +47,7 @@ echo "create database zabbix;" | mysql -u root -ptopsecret
 echo "source schema.sql;" | mysql -u root -ptopsecret zabbix
 echo "source images.sql;" | mysql -u root -ptopsecret zabbix
 echo "source data.sql;" | mysql -u root -ptopsecret zabbix
+sudo chkconfig mysqld on
 
 # -------------------------------------------------
 # Configure zabbix server and copy start scripts
@@ -72,8 +73,10 @@ sed -i "s/Hostname=Zabbix server/Hostname=`hostname`/" /etc/zabbix_agentd.conf
 # -------------------------------------------------
 # Start zabbix server and agentd
 # -------------------------------------------------
-/etc/init.d/zabbix_server start
-/etc/init.d/zabbix_agentd start
+sudo /sbin/chkconfig zabbix_server on
+sudo /sbin/chkconfig zabbix_agentd on
+sudo /etc/init.d/zabbix_server start
+sudo /etc/init.d/zabbix_agentd start
 
 
 # -------------------------------------------------
@@ -219,6 +222,8 @@ chown nginx. /var/lib/php/session
 # Start Web Components
 # --------------------------------------------
 /etc/init.d/nginx start
+
+sudo chkconfig php-fpm on
 /etc/init.d/php-fpm start
 
 
