@@ -19,7 +19,7 @@ yum install -y mysql-server php-mysql php-bcmath php-gd php-fpm php-xml php-ldap
 
 # add utf8 default setting
 mv /etc/my.cnf /etc/my.cnf.ori
-cp /vagrant/my.cnf /etc/my.cnf
+cp /vagrant/config/my.cnf /etc/my.cnf
 
 /etc/init.d/mysqld start
 
@@ -63,7 +63,7 @@ cp -r -p /opt/sources/zabbix/zabbix-2.4.6/frontends/php/* /var/www/zabbix/
 
 mv /var/www/zabbix/fonts/DejaVuSans.ttf /var/www/zabbix/fonts/DejaVuSans.ttf.ori
 cp /vagrant/msyh.ttf /var/www/zabbix/fonts/DejaVuSans.ttf
-
+cp /vagrant/config/zabbix.conf.php /var/www/zabbix/conf/
 chown nginx. /var/www/zabbix/*
 
 # Set the hostname in the Zabbix config
@@ -220,3 +220,27 @@ chown nginx. /var/lib/php/session
 # --------------------------------------------
 /etc/init.d/nginx start
 /etc/init.d/php-fpm start
+
+
+# -------------------------------------------
+# download and install grafana and grafana-zabbix plugin
+# ------------------------------------------
+wget https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0-1.x86_64.rpm
+sudo rpm -ivh grafana-2.5.0-1.x86_64.rpm
+cd /usr/share/grafana/public/app/plugins/datasource
+sudo tar -zxvf /vagrant/grafana-zabbix-v2.5.1.tar.gz
+sudo mv grafana-zabbix-2.5.1/zabbix ../
+sudo rm grafana-zabbix-2.5.1 -rf
+
+# -----------------------------------------
+# config grafana-server service
+# ----------------------------------------
+sudo /sbin/chkconfig --add grafana-server
+sudo service grafana-server start
+
+
+sudo service grafana-server stop
+
+# inject grafana datasource (zabbix datasource)
+echo ".read /vagrant/config/grafana-zabbix-datasource.sql"|sudo sqlite3 /var/lib/grafana.db
+sudo service grafana-server start

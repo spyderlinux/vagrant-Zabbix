@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  config.vm.box = "bento/centos-6.7"
+  config.vm.box = "bento/centos6.7x64"
   #config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "private_network", ip: "192.168.33.10"
 
@@ -28,10 +28,21 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: "wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo",privileged: true
   config.vm.provision "shell", path: "build.sh", privileged: true
   config.vm.post_up_message="
-  please use your browser and connect to: http://192.168.33.10:80 .
-  MySQL root password: topsecret
+========================================================================
+  zabbix web console  :http://192.168.33.10
+  Username            :admin     (default administrator)
+  Password            :zabbix
 
- when finished: using Username:admin Password:zabbix to login in
-
+  Username            :grafana   (zabbix admins, for grafana datasource)
+  Password            :grafana-ro
+------------------------------------------------------------------------
+  grafana web console :http://192.168.33.10:3000
+  Username            :admin
+  password            :admin
+------------------------------------------------------------------------
+  MySQL password:
+  username            :root
+  password            :topsecret
+========================================================================
   "
 end
