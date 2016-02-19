@@ -21,7 +21,12 @@ fi
 sudo rpm -ivh /vagrant/grafana-2.5.0-1.x86_64.rpm
 cd /usr/share/grafana/public/app/plugins/datasource
 sudo tar -zxvf /vagrant/grafana-zabbix-v2.5.1.tar.gz
-sudo mv grafana-zabbix-2.5.1/zabbix ../
+if [ ! -d zabbix ]; then
+  sudo mkdir zabbix
+else
+  sudo rm -rf zabbix && sudo mkdir zabbix
+fi
+sudo mv grafana-zabbix-2.5.1/zabbix/* zabbix/
 sudo rm grafana-zabbix-2.5.1 -rf
 
 # -----------------------------------------
@@ -30,8 +35,9 @@ sudo rm grafana-zabbix-2.5.1 -rf
 sudo /sbin/chkconfig --add grafana-server
 sudo service grafana-server start
 
-sudo service grafana-server stop
+# sleep 20 seconds to wait database init
+
+sleep 20
 
 # inject grafana datasource (zabbix datasource)
 echo ".read /vagrant/config/grafana-zabbix-datasource.sql"|sudo sqlite3 /var/lib/grafana/grafana.db
-sudo service grafana-server start
