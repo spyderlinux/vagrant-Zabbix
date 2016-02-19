@@ -9,7 +9,7 @@ baseurl=http://nginx.org/packages/centos/6/$basearch/
 gpgcheck=0
 enabled=1' > /etc/yum.repos.d/nginx.repo
 
-yum update -y
+
 yum install -y libtool git python-devel texinfo
 yum install -y mysql-server php-mysql php-bcmath php-gd php-fpm php-xml php-ldap php-mbstring wget libcurl-devel openldap-devel java-1.7.0-openjdk-devel net-snmp-devel libxml2-devel mysql-devel nginx vim
 
@@ -77,6 +77,8 @@ sudo /sbin/chkconfig zabbix_server on
 sudo /sbin/chkconfig zabbix_agentd on
 sudo /etc/init.d/zabbix_server start
 sudo /etc/init.d/zabbix_agentd start
+
+
 
 
 # -------------------------------------------------
@@ -225,27 +227,3 @@ chown nginx. /var/lib/php/session
 
 sudo chkconfig php-fpm on
 /etc/init.d/php-fpm start
-
-
-# -------------------------------------------
-# download and install grafana and grafana-zabbix plugin
-# ------------------------------------------
-wget https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0-1.x86_64.rpm
-sudo rpm -ivh grafana-2.5.0-1.x86_64.rpm
-cd /usr/share/grafana/public/app/plugins/datasource
-sudo tar -zxvf /vagrant/grafana-zabbix-v2.5.1.tar.gz
-sudo mv grafana-zabbix-2.5.1/zabbix ../
-sudo rm grafana-zabbix-2.5.1 -rf
-
-# -----------------------------------------
-# config grafana-server service
-# ----------------------------------------
-sudo /sbin/chkconfig --add grafana-server
-sudo service grafana-server start
-
-
-sudo service grafana-server stop
-
-# inject grafana datasource (zabbix datasource)
-echo ".read /vagrant/config/grafana-zabbix-datasource.sql"|sudo sqlite3 /var/lib/grafana.db
-sudo service grafana-server start

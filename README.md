@@ -43,3 +43,9 @@ comments
 Install is based on the steps found here:
 ========================================
  http://bicofino.io/blog/2015/10/09/install-zabbix-2-dot-4-6-from-source-on-centos/
+
+Some tips:
+=========
+* vagrant的provison script 我拆分成了多个，方便测试以及自定义。
+* 如果你想只使用zabbix 可以vagrant up --provision-with setRepo,installZabbix
+* 后续如果你想安装grafana 以及grafana-zabbix 插件时，可以使用 vagrant provision --provision-with installGrafana

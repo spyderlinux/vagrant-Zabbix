@@ -15,3 +15,6 @@ end
 g=Greater.new("pat")
 g.say_hi()
 g.say_bye()
+
+a="ss"
+puts a.length.to_s

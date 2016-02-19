@@ -25,8 +25,9 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: "wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo",privileged: true
-  config.vm.provision "shell", path: "build.sh", privileged: true
+  config.vm.provision "setRepo",type:"shell", inline: "wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo",privileged: true
+  config.vm.provision "installZabbix",type:"shell", path: "build.sh", privileged: true
+  config.vm.provision "installGrafana",type:"shell",  path: "build2.sh"
   config.vm.post_up_message="
 ========================================================================
   zabbix web console  :http://192.168.33.10

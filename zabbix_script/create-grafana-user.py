@@ -16,8 +16,11 @@ newUser={
     }
   ]
 }
+
 try:
     user=zapi.user.create(newUser)
     print("Create user grafana (guest group) but with 'super admin' permisson  OK")
-except Exception,e:
+    exit(0)
+except Exception as e:
     print("error:%s" % e)
+    exit(1)
